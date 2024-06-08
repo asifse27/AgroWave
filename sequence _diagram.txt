@@ -1,0 +1,165 @@
+1
+@startuml
+actor "Farmer" as farmer
+participant "Agrowave System" as system
+participant "Database" as db
+
+farmer -> system: Request Selling History
+system -> db: Retrieve Selling History
+db --> system: Selling History Data
+system --> farmer: Display Selling History
+@enduml
+2
+@startuml
+actor "Farmer" as farmer
+actor "Customer" as customer
+participant "Agrowave System" as system
+participant "Database" as db
+participant "Payment Gateway" as payment
+
+== Listing Crop for Sale ==
+farmer -> system: List Crop for Sale
+system -> db: Save Crop Details
+db --> system: Confirmation
+system --> farmer: Crop Listed Successfully
+
+== Buying Crop ==
+customer -> system: Browse Crops
+system -> db: Retrieve Crop List
+db --> system: Crop List
+system --> customer: Display Crop List
+
+customer -> system: Select Crop
+system -> db: Retrieve Crop Details
+db --> system: Crop Details
+system --> customer: Display Crop Details
+
+customer -> system: Add to Cart
+system -> db: Add Crop to Cart
+db --> system: Confirmation
+system --> customer: Show Cart Update
+
+customer -> system: Checkout
+system -> db: Retrieve Cart Details
+db --> system: Cart Details
+system --> customer: Display Cart Details
+
+customer -> system: Make Payment
+system -> payment: Process Payment
+payment --> system: Payment Confirmation
+system -> db: Update Inventory
+db --> system: Confirmation
+system --> customer: Order Confirmation
+system -> farmer: Notify Sale
+@enduml
+3
+@startuml
+actor "Farmer" as farmer
+participant "Agrowave System" as system
+participant "Database" as db
+
+farmer -> system: Request Crop Stock View
+system -> db: Retrieve Crop Stock
+db --> system: Crop Stock Data
+system --> farmer: Display Crop Stock
+@enduml
+4
+
+@startuml
+actor "User" as user
+participant "Agrowave System" as system
+participant "Email Service" as email
+
+user -> system: Request Login
+system -> system: Validate Credentials
+alt Invalid Credentials
+    system -> user: Show Error Message
+else Valid Credentials
+    system -> email: Send OTP
+    email -> user: OTP Email
+    user -> system: Enter OTP
+    system -> system: Verify OTP
+    alt Invalid OTP
+        system -> user: Show Error Message
+    else Valid OTP
+        system -> user: Access Granted
+    end
+end
+@enduml
+5
+@startuml
+actor "User" as user
+participant "Agrowave System" as system
+participant "Database" as db
+
+user -> system: Access Profile
+system -> db: Retrieve Profile Data
+db --> system: Profile Data
+system --> user: Display Profile Data
+
+user -> system: Update Profile
+system -> db: Save Profile Data
+db --> system: Confirmation
+system --> user: Display Confirmation Message
+@enduml
+6
+@startuml
+actor "Farmer" as farmer
+participant "Agrowave System" as system
+participant "Expert" as expert
+
+farmer -> system: Request Expert Consultation
+system -> expert: Notify Expert of Request
+expert -> system: Accept Consultation Request
+system -> farmer: Confirm Consultation Schedule
+
+farmer -> system: Join Consultation
+system -> expert: Notify Farmer Joined
+expert -> system: Join Consultation
+system -> farmer: Start Consultation
+
+farmer -> expert: Ask Questions
+expert -> farmer: Provide Answers
+
+farmer -> system: End Consultation
+system -> expert: Notify End of Consultation
+expert -> system: Confirm Consultation Ended
+system -> farmer: Show Consultation Summary
+@enduml
+7
+@startuml
+actor "Admin" as admin
+participant "Agrowave System" as system
+participant "Database" as db
+participant "Logging Service" as logging
+
+admin -> system: Login
+system -> system: Validate Credentials
+alt Invalid Credentials
+    system -> admin: Show Error Message
+else Valid Credentials
+    system -> admin: Access Granted
+end
+
+admin -> system: Perform Maintenance Task
+alt Update Configurations
+    admin -> system: Update System Configurations
+    system -> db: Save Configuration Data
+    db --> system: Confirmation
+    system -> admin: Show Update Success Message
+else Manage User Accounts
+    admin -> system: View User Accounts
+    system -> db: Retrieve User Data
+    db --> system: User Data
+    system -> admin: Display User Data
+    admin -> system: Update/Delete User Account
+    system -> db: Save Changes
+    db --> system: Confirmation
+    system -> admin: Show Update/Delete Success Message
+else Monitor System Health
+    admin -> system: View System Logs
+    system -> logging: Retrieve Logs
+    logging --> system: System Logs
+    system -> admin: Display System Logs
+end
+@enduml
