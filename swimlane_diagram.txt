@@ -1,0 +1,173 @@
+1
+@startuml
+|User|
+start
+:Login;
+if (Credentials Valid?) then (yes)
+  |System|
+  :Access Granted;
+  |User|
+  :Select Maintenance Task;
+  if (Task == "Update Configurations") then (yes)
+    |System|
+    :Update System Configurations;
+    if (Changes Saved?) then (yes)
+      |User|
+      :Show Success Message;
+    else (no)
+      |User|
+      :Show Error Message;
+    endif
+  elseif (Task == "Manage User Accounts") then (yes)
+    |System|
+    :View User Accounts;
+    :Update/Delete User Account;
+    if (Changes Saved?) then (yes)
+      |User|
+      :Show Success Message;
+    else (no)
+      |User|
+      :Show Error Message;
+    endif
+  elseif (Task == "Monitor System Health") then (yes)
+    |System|
+    :View System Logs;
+    if (Logs Viewed?) then (yes)
+      |User|
+      :Show Success Message;
+    else (no)
+      |User|
+      :Show Error Message;
+    endif
+  else (invalid task)
+    |User|
+    :Show Error Message;
+  endif
+else (Credentials Valid?) then (no)
+  |System|
+  :Show Error Message;
+|User|
+stop
+@enduml
+2
+@startuml
+|User|
+start
+:Login;
+if (Credentials Valid?) then (yes)
+  |System|
+  :Access Granted;
+  |User|
+  :View Crop Stock;
+  if (Stock Available?) then (yes)
+    |System|
+    :Retrieve Crop Stock;
+    if (Stock Found?) then (yes)
+      |System|
+      :Display Crop Stock;
+    else (no)
+      |User|
+      :Show Empty Stock Message;
+    endif
+  else (no)
+    |User|
+    :Show Error Message;
+  endif
+else (Credentials Valid?) then (no)
+  |User|
+  :Show Error Message;
+@enduml
+3
+@startuml
+|Farmer|
+start
+:Farmer logs into the system;
+:Farmer selects 'Crop Recommendation';
+|System|
+fork
+  :Retrieve crop data;
+fork again
+  :Retrieve soil data;
+end fork
+:Analyze crop and soil data;
+if (Sufficient data?) then (yes)
+  :System provides crop recommendation;
+else (no)
+  :Request additional information from Farmer;
+  |Farmer|
+  :Farmer provides additional information;
+  |System|
+  :Re-analyze data;
+  :System provides crop recommendation;
+endif
+|Farmer|
+:Farmer reviews the crop recommendation;
+if (Farmer accepts recommendation?) then (yes)
+  |System|
+  :Save recommendation to Farmer's profile;
+else (no)
+  :Farmer exits recommendation process;
+endif
+stop
+@enduml
+4
+@startuml
+|Farmer|
+start
+:Farmer logs into the system;
+:Farmer selects 'Crop Recommendation';
+|System|
+fork
+  :Retrieve crop data;
+fork again
+  :Retrieve soil data;
+end fork
+:Analyze crop and soil data;
+if (Sufficient data?) then (yes)
+  :System provides crop recommendation;
+else (no)
+  :Request additional information from Farmer;
+  |Farmer|
+  :Farmer provides additional information;
+  |System|
+  :Re-analyze data;
+  :System provides crop recommendation;
+endif
+|Farmer|
+:Farmer reviews the crop recommendation;
+if (Farmer accepts recommendation?) then (yes)
+  |System|
+  :Save recommendation to Farmer's profile;
+else (no)
+  :Farmer exits recommendation process;
+endif
+stop
+@enduml
+5
+@startuml
+|User|
+start
+:User attempts to access system;
+if (Credentials Provided?) then (yes)
+  |User|
+  :Prompt for Email and Password;
+  |User|
+  :Receive Email and Password;
+  if (Email and Password Provided?) then (yes)
+    |System|
+    :Verify Credentials;
+    if (Credentials Valid?) then (yes)
+      |System|
+      :Grant Access;
+    else (no)
+      |System|
+      :Deny Access - Invalid Credentials;
+    endif
+  else (no)
+    |System|
+    :Deny Access - Missing Email or Password;
+  endif
+else (no)
+  |System|
+  :Deny Access - No Credentials Provided;
+@enduml
