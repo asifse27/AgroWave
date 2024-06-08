@@ -1,0 +1,133 @@
+
+1
+@startuml
+actor "User" as user
+participant "Agrowave System" as system
+participant "Email Service" as email
+
+user -> system: Request Login
+system -> system: Validate Credentials
+alt Invalid Credentials
+    system -> user: Show Error Message
+else Valid Credentials
+    system -> email: Send OTP
+    email -> user: OTP Email
+    user -> system: Enter OTP
+    system -> system: Verify OTP
+    alt Invalid OTP
+        system -> user: Show Error Message
+    else Valid OTP
+        system -> user: Access Granted
+    end
+end
+@enduml
+2
+@startuml
+actor "User" as user
+participant "Agrowave System" as system
+
+user -> system: Request Login
+system -> system: Validate Credentials
+alt Invalid Credentials
+    system -> user: Show Error Message
+else Valid Credentials
+    system -> user: Access Granted
+end
+@enduml
+3
+@startuml
+actor "User" as user
+participant "Agrowave System" as system
+participant "Database" as db
+
+user -> system: Access Profile
+system -> db: Retrieve Profile Data
+db --> system: Profile Data
+system --> user: Display Profile Data
+
+user -> system: Update Profile
+system -> db: Save Profile Data
+db --> system: Confirmation
+system --> user: Display Confirmation Message
+@enduml
+4
+@startuml
+actor "Farmer" as farmer
+participant "Agrowave System" as system
+participant "Expert" as expert
+
+farmer -> system: Request Expert Consultation
+system -> expert: Notify Expert of Request
+expert -> system: Accept Consultation Request
+system -> farmer: Confirm Consultation Schedule
+
+farmer -> system: Join Consultation
+system -> expert: Notify Farmer Joined
+expert -> system: Join Consultation
+system -> farmer: Start Consultation
+
+farmer -> expert: Ask Questions
+expert -> farmer: Provide Answers
+
+farmer -> system: End Consultation
+system -> expert: Notify End of Consultation
+expert -> system: Confirm Consultation Ended
+system -> farmer: Show Consultation Summary
+@enduml
+5
+@startuml
+actor "Admin" as admin
+participant "Agrowave System" as system
+participant "Database" as db
+participant "Logging Service" as logging
+
+admin -> system: Login
+system -> system: Validate Credentials
+alt Invalid Credentials
+    system -> admin: Show Error Message
+else Valid Credentials
+    system -> admin: Access Granted
+end
+
+admin -> system: Perform Maintenance Task
+alt Update Configurations
+    admin -> system: Update System Configurations
+    system -> db: Save Configuration Data
+    db --> system: Confirmation
+    system -> admin: Show Update Success Message
+else Manage User Accounts
+    admin -> system: View User Accounts
+    system -> db: Retrieve User Data
+    db --> system: User Data
+    system -> admin: Display User Data
+    admin -> system: Update/Delete User Account
+    system -> db: Save Changes
+    db --> system: Confirmation
+    system -> admin: Show Update/Delete Success Message
+else Monitor System Health
+    admin -> system: View System Logs
+    system -> logging: Retrieve Logs
+    logging --> system: System Logs
+    system -> admin: Display System Logs
+end
+@enduml
+6
+@startuml
+actor "Customer" as customer
+participant "Agrowave System" as system
+participant "Database" as db
+
+customer -> system: Browse Products
+system -> db: Retrieve Product List
+db --> system: Product List
+system --> customer: Display Product List
+
+customer -> system: Select Product
+system --> customer: Display Product Details
+
+customer -> system: Add to Cart
+system -> db: Add Product to Cart
+db --> system: Confirmation
+system --> customer: Show Cart Update
+@enduml
+
